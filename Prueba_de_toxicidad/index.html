@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Prueba de toxicidad</h1>
+    <input id="dato" type="text" placeholder="escriba algo aqui" />
+    <button onclick="analizar()">analizar</button>
+    <p id="resultado"></p>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.0.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/toxicity@1.2.2"></script>
+  <script>
+    let modelo;
+
+    async function cargarModelo() {
+      modelo = await toxicity.load(0.7);
+      console.log("modelo cargardo");
+    }
+    cargarModelo();
+    async function analizar() {
+      const texto = document.getElementById("dato").value;
+      const resultados = await modelo.classify([texto]);
+
+      let salida = "";
+
+      resultados.forEach((r) => {
+        const res = r.results[0];
+        if (res.match) {
+          salida += "Detectado:" + r.label + "<br>";
+        }
+      });
+      document.getElementById("resultado").innerHTML = salida || "no toxico";
+    }
+  </script>
+</html>
