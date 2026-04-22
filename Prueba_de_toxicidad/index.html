@@ -8,16 +8,19 @@
   <body>
     <h1>Prueba de toxicidad</h1>
     <input id="dato" type="text" placeholder="escriba algo aqui" />
-    <button onclick="analizar()">analizar</button>
+    <button id="boton" disabled onclick="analizar()">analizar</button>
     <p id="resultado"></p>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.0.0/dist/tf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/toxicity@1.2.2"></script>
   <script>
     let modelo;
+    let boton = document.getElementById("boton");
 
     async function cargarModelo() {
+      boton.disabled = true;
       modelo = await toxicity.load(0.7);
+      boton.disabled = false;
       console.log("modelo cargardo");
     }
     cargarModelo();
